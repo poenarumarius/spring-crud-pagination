@@ -1,189 +1,167 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Core CSS - Include with every page -->
-    <link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap-3.1.1.min.css" 
-        data-th-href="@{/resources/css/bootstrap-3.1.1.min.css}" />
-        
-    <link type="text/css" rel="stylesheet" href="../../resources/font-awesome/css/font-awesome.css" 
-        data-th-href="@{/resources/font-awesome/css/font-awesome.css}" />
-
-    <!-- SB Admin CSS - Include with every page -->
-    <link type="text/css" rel="stylesheet" href="../../resources/css/sb-admin.css" 
-        data-th-href="@{/resources/css/sb-admin.css}" />
-    
-    <style>
-        .no-border-on-me>thead>tr>th,
-        .no-border-on-me>tbody>tr>th,
-        .no-border-on-me>tfoot>tr>th,
-        .no-border-on-me>thead>tr>td,
-        .no-border-on-me>tbody>tr>td,
-        .no-border-on-me>tfoot>tr>td
-        {
-            border-top-style: none;
-            border-bottom-style: none;
-        }
-    </style>
-    <style>
-        .dropdown-menu {
-          min-width: 0px;
-        }    
-	</style>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-    <title data-th-text="#{role.list.page.title}">Title</title>
-</head>
+<head th:replace="fragments/sb_admin_2 :: header('Trading system - Role list')"></head>
 
 <body>
 
-<div id="wrapper">                <!-- /#wrapper -->
+	<div id="wrapper">
 
-    <div data-th-replace="fragments/sb-admin :: top-nav"></div>
-    
-    <div data-th-replace="fragments/sb-admin :: vert-nav"></div>
+		<nav class="navbar navbar-default navbar-static-top" role="navigation"
+			style="margin-bottom: 0">
+			<div th:replace="fragments/sb_admin_2 :: navigation-brand"></div>
+			<div th:replace="fragments/sb_admin_2 :: navigation-top"></div>
+			<div th:replace="fragments/sb_admin_2 :: navigation-sidebar"></div>
+		</nav>
 
-    <div id="page-wrapper">
-        <div class="row">
-            <div class="col-xs-12">
-            
-				<h4 class="page-header" data-th-text="#{role.list.table.title}">Configured Strategies</h4>
-				<div class="table responsive">
-				<table class="table table-striped table-bordered table-hover">
-					<thead>
-						<tr>
-							<th class="col-xs-1" data-th-text="#{role.list.id.label}">Id</th>
-							<th class="col-xs-10" data-th-text="#{role.list.rolename.label}">Strategy Type</th>
-							<th class="col-xs-1" data-th-text="#{role.list.actions.label}">Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr data-th-each="role : ${roles}">
-							<td data-th-text="${role.id}">1</td>
-							<td data-th-text="${role.rolename}">USER_TEST</td>
-                            <td>
-                                <div class="btn-group">
-                                  <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    Actions<span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#" data-th-href="@{/role/edit(id=${role.id})}">
-                                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;
-                                            <span data-th-text="#{button.label.edit}">edit</span>
-                                       </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-th-href="@{/role/delete(id=${role.id},phase=stage)}">
-                                           <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;
-                                           <span data-th-text="#{button.label.delete}">delete</span>
-                                       </a>
-                                    </li>
-                                  </ul>
-                                </div>                            
-                            </td>
-						</tr>
-                        <tr data-th-remove="all">
-                            <td>2</td>
-                            <td>ROLE_TEST2</td>
-                            <td>
-                                <div class="btn-group">
-                                  <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    Actions<span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;
-                                            <span data-th-text="#{button.label.edit}">edit</span>
-                                       </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                           <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;
-                                           <span data-th-text="#{button.label.delete}">delete</span>
-                                       </a>
-                                    </li>
-                                  </ul>
-                                </div>                            
-                            </td>
-                        </tr>
-					</tbody>
-				</table>
+		<!-- Page Content -->
+		<div id="page-wrapper">
+
+			<div class="row">
+				<div class="col-lg-12">
+					<h3 class="page-header" th:text="#{role.list.table.title}">Tables</h3>
 				</div>
-				
-				<br />
-				
-				<form class="form" action="#" data-th-action="@{/role/add}" data-th-object="${role}" method="post">
-				<div class="table responsive">
-					<table class="no-border-on-me table ">
-						<thead>
-							<tr>
-								<th class="col-xs-1"></th>
-								<th class="col-xs-10" data-th-text="#{role.list.rolename.label}">Strategy Name</th>
-								<th class="col-xs-1" data-th-text="#{role.list.actions.label}">Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><input type="text" hidden="hidden" data-th-field="*{id}"></input></td>
-								<td><input class="form-control" type="text"	data-th-field="*{rolename}" placeholder="Name"></input></td>
-								<td>
-									<button type="submit" class="btn btn-primary" data-th-text="#{button.label.add}">Add Role</button>
-								</td>
-							</tr>
-							<tr>
-								<td class="col-xs-1"></td>
-								<td class="col-xs-10 text-danger" data-th-if="${#fields.hasErrors('rolename')}" data-th-errors="*{rolename}">name error</td>
-								<td class="col-xs-1"></td>
-							</tr>
-						</tbody>
-					</table>
+			</div>
+			<!-- /.row -->
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-default">
+<!-- 						<div class="panel-heading"> -->
+<!-- 							<h4 th:text="#{user.list.table.title}">DataTables Advanced Tables</h4> -->
+<!-- 						</div> -->
+						<!-- /.panel-heading -->
+						<div class="panel-body">
+							<div class="alert alert-danger alert-dismissable" th:if="${error != null}" id="alertError">
+			                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			                    <h4 th:text="${error}">Error!</h4>
+			                </div>
+			                <div class="alert alert-success alert-dismissable" th:if="${message != null}" id="alertSuccess">
+			                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			                    <h4 th:text="${message}">Success!</h4>
+			                </div>
+							<div class="table-responsive">
+								<div id="dataTables-example_wrapper"
+									class="dataTables_wrapper form-inline" role="grid">
+									<div class="row">
+										<div class="col-sm-6">
+											<div class="dataTables_length" id="dataTables-example_length">
+												<label><select name="dataTables-example_length"
+													aria-controls="dataTables-example"
+													class="form-control input-sm"><option value="10">10</option>
+														<option value="25">25</option>
+														<option value="50">50</option>
+														<option value="100">100</option></select> records per page</label>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div id="dataTables-example_filter" class="dataTables_filter">
+												<label>Search:<input type="search"
+													class="form-control input-sm"
+													aria-controls="dataTables-example"/></label>
+											</div>
+										</div>
+									</div>
+									<table class="table table-striped table-bordered table-hover dataTable no-footer"
+										id="dataTables-example" aria-describedby="dataTables-example_info">
+										<thead>
+											<tr>
+												<th class="col-xs-1" th:text="#{role.list.id.label}">Id</th>
+												<th class="col-xs-10" th:text="#{role.list.rolename.label}">Strategy Type</th>
+												<th class="col-xs-1" th:text="#{role.list.actions.label}">Action</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="role : ${page.content}">
+												<td th:text="${role.id}">1</td>
+												<td th:text="${role.rolename}">USER_TEST</td>
+					                            <td>
+					                                <div class="btn-group">
+													  <button class="btn btn-warning btn-xs dropdown-toggle" type="button" data-toggle="dropdown">
+													    Actions&nbsp;&nbsp;<span class="caret"></span>
+													  </button>
+													  <ul class="dropdown-menu">
+					                                    <li>
+							                                <a href="#" th:href="@{/role/edit(id=${role.id},page=${page.number-1})}">
+							                                    <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;
+							                                    <span th:text="#{button.label.edit}">edit</span>
+							                                </a>
+					                                    </li>
+					                                    <li>
+							                                <a href="#" th:href="@{/role/delete(id=${role.id},phase=stage,page=${page.number-1})}">
+							                                   <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;
+							                                   <span th:text="#{button.label.delete}">delete</span>
+							                                </a>
+					                                    </li>
+													  </ul>
+													</div>				             
+					                            </td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="row">
+										<div class="col-sm-6">
+											<div class="dataTables_info" id="dataTables-example_info"
+												role="alert" aria-live="polite" aria-relevant="all">
+					<!-- 							<a href="#" th:href="@{/user/add}"> -->
+					<!-- 								<button type="button" class="btn btn-default btn-sm"> -->
+					<!-- 									<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add Job -->
+					<!-- 								</button> -->
+					<!-- 							</a> -->
+												<span th:text="${page.navtext}"></span>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="dataTables_paginate paging_simple_numbers"
+												id="dataTables-example_paginate">
+												
+												<div th:replace="fragments/sb_admin_2 :: pagination"></div>
+												
+											</div>
+										</div>
+									</div>
+									<!-- /.row -->
+								</div>
+							</div>
+							<!-- /.table-responsive -->
+							<div class="panel panel-default">
+		                        <div class="panel-heading"><a name="addrole" />Add Role</div>
+		                        <div class="panel-body">
+		                        	<div class="col-md-12 column">
+									<form role="form" action="#" th:action="@{/role/add}" th:object="${role}" method="post">
+										<div class="row">
+											<div class="form-group col-md-3">
+												 <label for="inputRolename" th:text="#{role.list.rolename.label}">Rolename</label>
+												 <input  class="form-control" id="inputRolename" type="text" th:field="*{rolename}" placeholder="Rolename"/>
+											</div>
+										</div>
+										<div class="form-actions">
+											<button type="submit" class="btn btn-primary" th:text="#{button.label.add}">Submit</button>
+											<div class="text-danger" th:if="${#fields.hasErrors('rolename')}" th:errors="*{rolename}">username error</div>
+										</div>
+									</form>
+									</div>
+
+		                        </div>
+<!-- 		                        <div class="panel-footer">Panel Footer</div> -->
+		                    </div>
+						</div>
+						<!-- /.panel-body -->
+					</div>
+					<!-- /.panel -->
 				</div>
-				</form>
-				
-                 <div class="alert alert-danger alert-dismissable" th:if="${error != null}">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4 data-th-text="${error}">Error!</h4>
-                </div>
-                <div class="alert alert-success alert-dismissable" th:if="${message != null}">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4 data-th-text="${message}">Success!</h4>
-                </div>              
-				
-				
-            </div>  <!-- /.col-lg-12 -->				
-        </div>      <!-- /.row -->				
-    </div>		    <!-- page wrapper -->
-</div>              <!-- /#wrapper -->
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /#page-wrapper -->
 
-        
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script type="text/javascript" src="../../resources/js/jquery-1.11.0.min.js" 
-        data-th-src="@{/resources/js/jquery-1.11.0.min.js}"></script>
-        
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script type="text/javascript" src="../../resources/js/bootstrap-3.1.1.min.js" 
-        data-th-src="@{/resources/js/bootstrap-3.1.1.min.js}"></script>
+	</div>
+	<!-- /#wrapper -->
 
-    <!-- Core Scripts - Include with every page -->
-    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js" 
-        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
-        
-    <!-- SB Admin Scripts - Include with every page -->
-    <script type="text/javascript" src="../../resources/js/sb-admin.js" 
-        data-th-src="@{/resources/js/sb-admin.js}"></script>
+	<div th:include="fragments/sb_admin_2 :: scripts"></div>
 
 </body>
+
 </html>
+

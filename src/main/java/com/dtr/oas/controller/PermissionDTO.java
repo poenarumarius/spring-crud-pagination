@@ -17,20 +17,20 @@ public class PermissionDTO implements Serializable {
     private static final long serialVersionUID = -2707641174043923410L;
     static Logger logger = LoggerFactory.getLogger(PermissionDTO.class);
     
-    private int id;
+    private long id;
 
     @NotNull(message = "{error.permission.permissionname.null}")
     @NotEmpty(message = "{error.permission.permissionname.empty}")
     @Size(max = 50, message = "{permission.permissionname.role.max}")
     private String permissionname;
     
-    private List<Integer> permRoles;
+    private List<Long> permRoles;
     
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -42,11 +42,11 @@ public class PermissionDTO implements Serializable {
         this.permissionname = permissionname;
     }
 
-    public List<Integer> getPermRoles() {
+    public List<Long> getPermRoles() {
         return permRoles;
     }
 
-    public void setPermRoles(List<Integer> permRoles) {
+    public void setPermRoles(List<Long> permRoles) {
         this.permRoles = permRoles;
     }
 

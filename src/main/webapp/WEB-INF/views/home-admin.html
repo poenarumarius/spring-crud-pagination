@@ -1,94 +1,80 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
-	
-<head data-th-fragment="header">
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Core CSS - Include with every page -->
-    <link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap-3.1.1.min.css" 
-        data-th-href="@{/resources/css/bootstrap-3.1.1.min.css}" />
-        
-    <link type="text/css" rel="stylesheet" href="../../resources/font-awesome/css/font-awesome.css" 
-        data-th-href="@{/resources/font-awesome/css/font-awesome.css}" />
-
-    <!-- SB Admin CSS - Include with every page -->
-    <link type="text/css" rel="stylesheet" href="../../resources/css/sb-admin.css" 
-        data-th-href="@{/resources/css/sb-admin.css}" />
-    
-    <style>
-        .no-border-on-me>thead>tr>th,
-        .no-border-on-me>tbody>tr>th,
-        .no-border-on-me>tfoot>tr>th,
-        .no-border-on-me>thead>tr>td,
-        .no-border-on-me>tbody>tr>td,
-        .no-border-on-me>tfoot>tr>td
-        {
-            border-top-style: none;
-            border-bottom-style: none;
-        }
-    </style>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-	<title data-th-text="#{admin.page.title}">Title</title>
-</head>
+<head th:replace="fragments/sb_admin_2 :: header('Trading system - ADMIN')"></head>
 
 <body>
 
-<div id="wrapper">                <!-- /#wrapper -->
+	<div id="wrapper">
 
-    <div data-th-replace="fragments/sb-admin :: top-nav"></div>
-    
-    <div data-th-replace="fragments/sb-admin :: vert-nav"></div>
+		<nav class="navbar navbar-default navbar-static-top" role="navigation"
+			style="margin-bottom: 0">
+			<div th:replace="fragments/sb_admin_2 :: navigation-brand"></div>
+			<div th:replace="fragments/sb_admin_2 :: navigation-top"></div>
+			<div th:replace="fragments/sb_admin_2 :: navigation-sidebar"></div>
+		</nav>
 
-    <div id="page-wrapper">
-        <div class="row">
-            <div class="col-lg-12">
+		<!-- Page Content -->
+		<div id="page-wrapper">
 
-	            <h1 data-th-text="#{admin.page.title}">Title</h1>
-	            <p>
-	                <a href="strategy/">Strategy list</a><br />
-	            </p>
-                <p>
-                    <a href="user/">User list</a><br />
-                </p>
-                <p>
-                    <a href="role/">Role list</a><br />
-                </p>
-                <p>
-                    <a href="permission/">Permission list</a><br />
-                </p>
+			<div class="row">
+				<div class="col-lg-12">
+					<h3 class="page-header" th:text="#{admin.page.title}">Tables</h3>
+				</div>
+			</div>
+			<!-- /.row -->
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-default">
+<!-- 						<div class="panel-heading"> -->
+<!-- 							<h4 th:text="#{home.title}">DataTables Advanced Tables</h4> -->
+<!-- 						</div> -->
+						<!-- /.panel-heading -->
+						<div class="panel-body">
+							<div class="table-responsive">
+				                <p>
+				                    <a href="user/">User list</a><br />
+				                </p>
+				                <p>
+				                    <a href="role/">Role list</a><br />
+				                </p>
+				                <p>
+				                    <a href="permission/">Permission list</a><br />
+				                </p>
+							</div>
+							<!-- /.table-responsive -->
+							<!-- div class="well">
+								<h4>DataTables Usage Information</h4>
+								<p>
+									DataTables is a very flexible, advanced tables plugin for
+									jQuery. In SB Admin, we are using a specialized version of
+									DataTables built for Bootstrap 3. We have also customized the
+									table headings to use Font Awesome icons in place of images.
+									For complete documentation on DataTables, visit their website
+									at <a href="https://datatables.net/" target="_blank">https://datatables.net/</a>.
+								</p>
+								<a href="https://datatables.net/" target="_blank"
+									class="btn btn-default btn-lg btn-block">View DataTables
+									Documentation</a>
+							</div-->
+						</div>
+						<!-- /.panel-body -->
+					</div>
+					<!-- /.panel -->
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /#page-wrapper -->
 
+	</div>
+	<!-- /#wrapper -->
 
-            </div>  <!-- /.col-lg-12 -->                
-        </div>      <!-- /.row -->              
-    </div>          <!-- page wrapper -->
-</div>              <!-- /#wrapper -->
-
-        
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script type="text/javascript" src="../../resources/js/jquery-1.11.0.min.js" 
-        data-th-src="@{/resources/js/jquery-1.11.0.min.js}"></script>
-        
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script type="text/javascript" src="../../resources/js/bootstrap-3.1.1.min.js" 
-        data-th-src="@{/resources/js/bootstrap-3.1.1.min.js}"></script>
-
-    <!-- Core Scripts - Include with every page -->
-    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js" 
-        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
-        
-    <!-- SB Admin Scripts - Include with every page -->
-    <script type="text/javascript" src="../../resources/js/sb-admin.js" 
-        data-th-src="@{/resources/js/sb-admin.js}"></script>
+	<div th:include="fragments/sb_admin_2 :: scripts"></div>
 
 </body>
+
 </html>
+

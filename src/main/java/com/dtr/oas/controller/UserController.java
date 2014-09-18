@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,11 +62,14 @@ public class UserController {
 
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
     @PreAuthorize("hasRole('CTRL_USER_LIST_GET')")
-    public String listUsers(Model model) {
+    public String listUsers(Model model, @PageableDefault(size = 10) Pageable pageable) {
         logger.debug("IN: User/list-GET");
 
-        List<User> users = userService.getUsers();
-        model.addAttribute("users", users);
+//        List<User> users = userService.getUsers();
+//        model.addAttribute("users", users);
+        
+        PageWrapper<User> page = new PageWrapper<User>(userService.getUsers(pageable), "/user/list");
+        model.addAttribute("page", page);
 
         // if there was an error in /add, we do not want to overwrite
         // the existing user object containing the errors.
@@ -87,7 +92,7 @@ public class UserController {
             logger.debug("UserDTO add error: " + result.toString());
             redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.userDTO", result);
             redirectAttrs.addFlashAttribute("userDTO", userDTO);
-            return "redirect:/user/list";
+            return "redirect:/user/list#adduser";
         } else {
             User user = new User();
 
@@ -109,8 +114,11 @@ public class UserController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     @PreAuthorize("hasRole('CTRL_USER_EDIT_GET')")
-    public String editUserPage(@RequestParam(value = "id", required = true)
-            Integer id, Model model, RedirectAttributes redirectAttrs) {
+    public String editUserPage(
+    		Model model, 
+    		RedirectAttributes redirectAttrs,
+    		@RequestParam(value = "id", required = true) Integer id,
+    		@RequestParam(value = "page", required = false) Integer page) {
 
         logger.debug("IN: User/edit-GET:  ID to query = " + id);
 
@@ -121,6 +129,7 @@ public class UserController {
                 UserDTO userDTO = getUserDTO(user);
                 logger.debug("User/edit-GET:  " + userDTO.toString());
                 model.addAttribute("userDTO", userDTO);
+                model.addAttribute("page", page);
             }
             return "user-edit";
         } catch (UserNotFoundException e) {
@@ -133,9 +142,13 @@ public class UserController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @PreAuthorize("hasRole('CTRL_USER_EDIT_POST')")
-    public String editUser(@Valid @ModelAttribute UserDTO userDTO,
-            BindingResult result, RedirectAttributes redirectAttrs,
-            @RequestParam(value = "action", required = true) String action) {
+    public String editUser(
+    		@Valid @ModelAttribute UserDTO userDTO,
+    		BindingResult result, 
+            RedirectAttributes redirectAttrs,
+            @RequestParam(value = "action", required = true) String action ,
+            @RequestParam(value = "page", required = false) String page) {
+
 
         logger.debug("IN: User/edit-POST: " + action);
 
@@ -147,7 +160,8 @@ public class UserController {
             logger.debug("User-edit error: " + result.toString());
             redirectAttrs.addFlashAttribute("org.springframework.validation.BindingResult.userDTO", result);
             redirectAttrs.addFlashAttribute("userDTO", userDTO);
-            return "redirect:/user/edit?id=" + userDTO.getId();
+            redirectAttrs.addFlashAttribute("page", page);
+            return "redirect:/user/edit?id=" + userDTO.getId() + "&page=" + page;
         } else if (action.equals(messageSource.getMessage("button.action.save",  null, Locale.US))) {
             logger.debug("User/edit-POST:  " + userDTO.toString());
             try {
@@ -168,14 +182,15 @@ public class UserController {
                 return "redirect:/user/list";
             }
         }
-        return "redirect:/user/list";
+        return "redirect:/user/list?page=" + page;
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     @PreAuthorize("hasRole('CTRL_USER_DELETE_GET')")
     public String deleteUser(
-            @RequestParam(value = "id", required = true) Integer id,
+    		@RequestParam(value = "id", required = true) Integer id,
             @RequestParam(value = "phase", required = true) String phase,
+            @RequestParam(value = "page", required = false) String page,
             Model model, RedirectAttributes redirectAttrs) {
 
         User user;
@@ -194,10 +209,11 @@ public class UserController {
             String message = messageSource.getMessage("ctrl.message.success.cancel", 
                     new Object[] {"Delete", businessObject, user.getUsername()}, Locale.US);
             redirectAttrs.addFlashAttribute("message", message);
-            return "redirect:/user/list";
+//            return "redirect:/user/list";
         } else if (phase.equals(messageSource.getMessage("button.action.stage", null, Locale.US))) {
             logger.debug("     adding user : " + user.toString());
             model.addAttribute("user", user);
+            model.addAttribute("page", page);
             return "user-delete";
         } else if (phase.equals(messageSource.getMessage("button.action.delete", null, Locale.US))) {
             try {
@@ -205,16 +221,16 @@ public class UserController {
                 String message = messageSource.getMessage("ctrl.message.success.delete", 
                         new Object[] {businessObject, user.getUsername()}, Locale.US);
                 redirectAttrs.addFlashAttribute("message", message);
-                return "redirect:/user/list";
+//                return "redirect:/user/list";
             } catch (UserNotFoundException e) {
                 String message = messageSource.getMessage("ctrl.message.error.notfound", 
                         new Object[] {"user id", id}, Locale.US);
                redirectAttrs.addFlashAttribute("error", message);
-                return "redirect:/user/list";
+//                return "redirect:/user/list";
            }
         }
 
-        return "redirect:/user/list";
+        return "redirect:/user/list?page=" + page;
     }
 
     @PreAuthorize("hasAnyRole('CTRL_USER_EDIT_GET','CTRL_USER_DELETE_GET')")

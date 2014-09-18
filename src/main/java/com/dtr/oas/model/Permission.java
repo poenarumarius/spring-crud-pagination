@@ -5,9 +5,13 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -21,24 +25,51 @@ import com.google.common.base.Objects;
 
 @Entity
 @Table(name = "PERMISSIONS")
-public class Permission extends BaseEntity implements GrantedAuthority {
+public class Permission implements GrantedAuthority {
 
     private static final long serialVersionUID = -5404269148967698143L;
     static Logger logger = LoggerFactory.getLogger(Permission.class);
     
+    // MySQL ::
+	@Id
+	@GeneratedValue
+	@Column(name = "id", columnDefinition="int(6)")
+	// PgSQL ::
+//    @Id
+//	@SequenceGenerator(name="permissionsIdGenerator", sequenceName="permissions_id_seq")
+//	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="permissionsIdGenerator")
+//	@Column(name="ID", columnDefinition="serial")
+    private long id;
+
     @NotNull(message = "{error.permission.permissionname.null}")
     @NotEmpty(message = "{error.permission.permissionname.empty}")
     @Size(max = 50, message = "{permission.permissionname.role.max}")
     @Column(name = "permissionname", length = 50)
     private String permissionname;
-    
+
     @OneToMany(fetch = FetchType.EAGER)  
+    // MySQL ::
     @JoinTable(name = "role_permissions",   
-        joinColumns        = {@JoinColumn(name = "permission_id", referencedColumnName = "id")},  
-        inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}  
-    )  
+        joinColumns        = {@JoinColumn(name = "permission_id", referencedColumnName = "id", columnDefinition="int(6)")},  
+        inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id", columnDefinition="int(6)")}  
+    ) 
+    // PgSQL ::
+//	@JoinTable(name = "role_permissions",   
+//	joinColumns        = {@JoinColumn(name = "permission_id", referencedColumnName = "id", columnDefinition="bigint")},  
+//	inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id", columnDefinition="bigint")}  
+//			) 
     private Set<Role> permRoles;
 
+    
+    
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    
     public String getPermissionname() {
         return permissionname;
     }
@@ -60,30 +91,38 @@ public class Permission extends BaseEntity implements GrantedAuthority {
         this.permRoles = permRoles;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s(id=%d, permissionname='%s')", 
-                this.getClass().getSimpleName(), 
-                this.getId(), this.getPermissionname());
-    }
+	@Override
+	public String toString() {
+		return "Permission [id=" + id + ", permissionname=" + permissionname + "]";
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null)
-            return false;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((permissionname == null) ? 0 : permissionname.hashCode());
+		return result;
+	}
 
-        if (o instanceof Permission) {
-            final Permission other = (Permission) o;
-            return Objects.equal(getId(), other.getId())
-                    && Objects.equal(getPermissionname(), other.getPermissionname());
-        }
-        return false;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Permission other = (Permission) obj;
+		if (id != other.id)
+			return false;
+		if (permissionname == null) {
+			if (other.permissionname != null)
+				return false;
+		} else if (!permissionname.equals(other.permissionname))
+			return false;
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId(), getPermissionname());
-    }
+    
 }

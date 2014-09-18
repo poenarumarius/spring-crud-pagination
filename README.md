@@ -11,3 +11,15 @@ This example has been validated with the following environment on MS Windows 7:
 3. Tomcat 7.0.50 (separate install)
 4. Maven 3.0.5 (separate install)
 5. MySQL 5.5.29
+
+
+myUpdates:
+==========
+
+* DAO is changed with JPARepository;
+* Pagination is added to list-pages, with modifications in controllers and other components;
+* Template is updated to sb_admin_2;
+* For change MySQL with PgSQL, i put modifications in entities and in database.properties;
+* pom.xml is updated to recent libraries versions;
+* Removed tests;
+* Other minor modifications.

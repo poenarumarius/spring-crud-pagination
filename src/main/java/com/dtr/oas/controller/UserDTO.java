@@ -16,7 +16,7 @@ public class UserDTO implements Serializable {
     private static final long serialVersionUID = -1631797874369735181L;
     static Logger logger = LoggerFactory.getLogger(UserDTO.class);
     
-    private int id;
+    private long id;
     
     @NotNull(message = "{error.user.username.null}")
     @NotEmpty(message = "{error.user.username.empty}")
@@ -29,12 +29,12 @@ public class UserDTO implements Serializable {
     private String password;
     
     private boolean enabled;
-    private int roleId;
+    private long roleId;
     
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
     public String getUsername() {
@@ -55,10 +55,10 @@ public class UserDTO implements Serializable {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-    public int getRoleId() {
+    public long getRoleId() {
         return roleId;
     }
-    public void setRoleId(int roleId) {
+    public void setRoleId(long roleId) {
         this.roleId = roleId;
     }
     
